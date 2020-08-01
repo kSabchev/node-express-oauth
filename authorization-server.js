@@ -2,13 +2,13 @@ const fs = require("fs")
 const express = require("express")
 const bodyParser = require("body-parser")
 const jwt = require("jsonwebtoken")
+var url = require('url');
 const {
 	randomString,
 	containsAll,
 	decodeAuthCredentials,
 	timeout,
 } = require("./utils")
-const { decode } = require("punycode")
 
 const config = {
 	port: 9001,
@@ -88,7 +88,7 @@ app.get('/authorize', (req, res) => {
 		const code = randomString()
 		authorizationCodes[code] = { clientReq, userName}
 
-		const redirectUri = url.parse(clientReq.redirectUri)
+		const redirectUri = url.parse(clientReq.redirect_uri)
 		redirectUri.query = {
 			code,
 			state: clientReq.state,
@@ -123,8 +123,9 @@ app.get('/authorize', (req, res) => {
 			  scope: clientReq.scope,
 		  },
 		  config.privateKey,
+		  { algorithm: 'RS256' },
 		  {
-			  algorightm: "RS256",
+			  //algorightm: "RS256",
 			  expiresIn: 300,
 			  issuer: "http://localhost:" + config.port,
 
