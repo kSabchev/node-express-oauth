@@ -128,7 +128,6 @@ app.get('/authorize', (req, res) => {
 			  //algorightm: "RS256",
 			  expiresIn: 300,
 			  issuer: "http://localhost:" + config.port,
-
 		  }
 	  )
 
