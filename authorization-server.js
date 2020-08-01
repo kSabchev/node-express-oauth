@@ -52,13 +52,13 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/authorize', (req, res) => {
-	const cliendId = req.query.client_id
+	const clientId = req.query.client_id
 	const client = clients[clientId]
 	if(!client){
 		res.status(401).send("Error: client not aurhotorized")
 		return
 	}
-	if ( typeof req.query.scope !=="string" || 	!constaimsAll(client.scopes, req.query.scope.split(" "))){
+	if ( typeof req.query.scope !=="string" || 	!containsAll(client.scopes, req.query.scope.split(" "))){
 			res.status(401).send("Error: invalid scopes requested")
 			return
 		}
@@ -74,7 +74,7 @@ app.get('/authorize', (req, res) => {
 
   
   app.post("/approve", (req, res) => {
-		const { userName, passowrd, requestId } = req.body
+		const { userName, password, requestId } = req.body
 		if( !userName || users[userName] !== password) {
 			res.status(401).send("Error: user not authorizzed")
 			return
